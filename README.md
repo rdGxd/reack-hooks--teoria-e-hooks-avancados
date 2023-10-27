@@ -1,72 +1,107 @@
-pnpx eslint src/**/*.js(x) --fix
+# Estudos React
 
-# Getting Started with Create React App
+## useState():
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O `useState` é uma função em JavaScript, geralmente usada em bibliotecas como o React, que permite criar e gerenciar variáveis que podem mudar ao longo do tempo em um programa. Isso é útil quando você deseja armazenar e atualizar informações que podem ser exibidas em uma página da web, por exemplo.
 
-## Available Scripts
+Imagine que você está criando uma página da web para contar o número de cliques em um botão. Para fazer isso, você pode usar o `useState`. Aqui está como funciona:
 
-In the project directory, you can run:
+Você declara uma variável usando o useState e inicializa com um valor, por exemplo, zero:
 
-### `npm start`
+```js
+const [contador, setContador] = useState(0);
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Neste exemplo, contador é a variável que irá armazenar o número de cliques, e setContador é uma função que você usa para atualizar o valor dessa variável.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Quando alguém clica no botão, você chama `setContador` para aumentar o valor do `contador`:
 
-### `npm test`
+```js
+<button onClick={() => setContador(contador + 1)}>Clique aqui</button>
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Isso significa que cada vez que o botão é clicado, a função setContador é chamada para aumentar o valor do `contador` em 1.
 
-### `npm run build`
+Agora, o `contador` armazena o número de cliques e pode ser usado em seu aplicativo para exibir essa informação, por exemplo, em um elemento de texto:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```js
+<p>O número de cliques é: {contador}</p>
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Assim, o `useState` permite que você crie uma variável que pode ser atualizada dinamicamente à medida que o usuário interage com sua aplicação, tornando-o uma ferramenta fundamental para o desenvolvimento de interfaces interativas em JavaScript.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## useEffect()
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+o `useEffect` é uma função usada para realizar ações secundárias em resposta a mudanças em um componente ou quando algo acontece no ciclo de vida do componente. Aqui está como funciona:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`Declaração do useEffect`: Você usa o useEffect em um componente funcional do React para realizar ações quando algo específico acontece. Para fazer isso, você passa duas coisas para o useEffect: uma função e um array de dependências (ou nada, se você quiser que o efeito seja executado toda vez que o componente for renderizado).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```js
+useEffect(() => {
+  // Código a ser executado quando ocorrer algum evento
+}, [dependencia1, dependencia2]);
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+`Ação a ser Realizada`: Dentro da função do `useEffect`, você coloca o código que deseja executar quando a ação ocorre. Por exemplo, você pode querer buscar dados de um servidor, atualizar o DOM, ou realizar qualquer ação assíncrona.
 
-## Learn More
+`Dependências`: O array de dependências é uma lista das variáveis ou valores que o `useEffect` deve observar. Se algum desses valores mudar, o código dentro do `useEffect` será executado novamente. Se você não fornecer um array de dependências, o `useEffect` será executado sempre que o componente for renderizado.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Aqui estão alguns exemplos de como o `useEffect` pode ser usado:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+`Efeito Sem Dependências:` Se você passar um array vazio como dependência, o `useEffect` será executado uma vez, logo após o componente ser montado. Isso é útil para realizar tarefas de inicialização.
 
-### Code Splitting
+```js
+useEffect(() => {
+  // Código a ser executado após a montagem do componente
+}, []);
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+`Efeito com Dependências:` Se você passar variáveis no array de dependências, o `useEffect` será executado toda vez que uma dessas variáveis mudar. Isso é útil para reagir a mudanças específicas.
 
-### Analyzing the Bundle Size
+```js
+useEffect(() => {
+  // Código a ser executado quando dependencia1 ou dependencia2 mudarem
+}, [dependencia1, dependencia2]);
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+O `useEffect` é uma ferramenta poderosa para controlar ações secundárias em componentes do React e garantir que seu aplicativo responda às mudanças de maneira apropriada.
 
-### Making a Progressive Web App
+Antes do React Hooks, o gerenciamento do ciclo de vida do componente era feito usando componentes de classe, e havia vários métodos do ciclo de vida, como `componentDidMount`, `componentDidUpdate` e `componentWillUnmount`. Agora, com os React Hooks, você pode usar o `useEffect` para replicar o comportamento desses métodos em componentes funcionais. Vou explicar como você pode usar o `useEffect` para emular os ciclos de vida do componente:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1- `componentDidMount`: Este método era chamado quando um componente de classe era montado no DOM. Você pode replicar esse comportamento usando o useEffect com um array de dependência vazio. O código dentro do useEffect será executado após o primeiro render.
 
-### Advanced Configuration
+```js
+useEffect(() => {
+  // Código só sera excetuado 1x
+  console.log("componentDidMount");
+});
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+2- `componentDidUpdate`: Esse método era chamado sempre que as props ou o estado do componente de classe eram atualizados. Você pode replicar esse comportamento usando o useEffect com uma lista de dependências que inclui as variáveis que você deseja observar.
 
-### Deployment
+```js
+useEffect(() => {
+  // Código a ser executado após cada atualização do componente (equivalente ao componentDidUpdate)
+  console.log("componentDidUpdate");
+}, [dependencia1, dependencia2]);
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+3- `componentWillUnmount`:Este método era chamado quando um componente de classe estava prestes a ser desmontado do DOM. Você pode replicar esse comportamento usando o useEffect para realizar a limpeza ou remoção de event listeners antes que o componente seja desmontado.
 
-### `npm run build` fails to minify
+```js
+useEffect(() => {
+  // Código a ser executado antes da desmontagem do componente (equivalente ao componentWillUnmount)
+  document.querySelector("h1").addEventListener("click", eventFn);
+  console.log("componentWillUnmount");
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  return () => {
+    // Limpeza ou remoção de event listeners
+    document.querySelector("h1")?.removeEventListener("click", eventFn);
+    console.log("componentWillUnmount");
+  };
+}, []);
+```
+
+Lembre-se de que o `useEffect` é flexível e pode ser usado para emular outros aspectos dos ciclos de vida do componente. Ele oferece a capacidade de realizar ações secundárias em resposta a mudanças no componente ou no ambiente, tornando-o uma alternativa poderosa aos componentes de classe para o gerenciamento de efeitos e ciclos de vida em componentes funcionais no React.
