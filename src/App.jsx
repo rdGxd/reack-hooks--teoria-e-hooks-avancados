@@ -1,19 +1,26 @@
 import P from "prop-types";
-import React, { useCallback, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import "./App.css";
 
-const Button = React.memo(function Button({ incrementButton }) {
-  console.log("Filho");
-  return <button onClick={() => incrementButton(10)}>+</button>;
-});
+const Post = ({ post }) => {
+  console.log("Filho renderizou");
+  return (
+    <div className="App">
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+    </div>
+  );
+};
 
-Button.propTypes = {
-  incrementButton: P.func,
+Post.propTypes = {
+  post: P.shape({
+    title: P.string,
+    body: P.string,
+  }),
 };
 
 export default function App() {
-  const [counter, setCounter] = useState(0);
-
   /* useState
   // A gente tem uma função passa o estado inicial para essa função e depois a gente pega do retorno dessa função
 
@@ -32,8 +39,7 @@ export default function App() {
   //   setCounter(counter + 1);
   // };
  */
-
-  /*  useEffect
+  /* useEffect
 
   const [counter2, setCounter2] = useState(0);
 
@@ -57,20 +63,42 @@ export default function App() {
     console.log("C1", counter, "C2", counter2);
   }, [counter, counter2]);
  */
-
-  // useCallback vai renderizar a função sempre que a dependência mudar
+  /* useCallback
+    // useCallback vai renderizar a função sempre que a dependência mudar
   const incrementCounter = useCallback((num) => {
     // Usando o valor antigo do counter dessa maneira eu nao tenho mais dependências
-    setCounter((c) => c + num);
+    setCounter((prevCounter) => prevCounter + num);
   }, []);
+  */
+  // useMemo() voce pode memorizar um component em sí, um valor para ser memorizado
+  // useCallback() para vc memorizar um callback (FUNÇÃO)
+  const [posts, setPosts] = useState([]);
+  const [value, setValue] = useState("");
+  console.log("Pai renderizou!");
 
-  console.log("PAI");
+  // componentDidMount
+  useEffect(() => {
+    setTimeout(() => {
+      fetch("https://jsonplaceholder.typicode.com/posts")
+        .then((response) => response.json())
+        .then((response) => setPosts(response));
+    }, 3000);
+  }, []);
 
   return (
     <div className="App">
-      <p>Teste2</p>
-      <h1>C1: {counter}</h1>
-      <Button incrementButton={incrementCounter} />
+      <input
+        type="search"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      {useMemo(() => {
+        return posts.length > 0 ? (
+          posts.map((post) => <Post post={post} key={post.id} />)
+        ) : (
+          <p>Ainda Não existem posts</p>
+        );
+      }, [posts])}
     </div>
   );
 }
