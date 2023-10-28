@@ -1,13 +1,13 @@
 import P from "prop-types";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import "./App.css";
 
-const Post = ({ post }) => {
+const Post = ({ post, handleClick }) => {
   console.log("Filho renderizou");
   return (
     <div className="App">
-      <h1>{post.title}</h1>
+      <h1 onClick={() => handleClick(post.title)}>{post.title}</h1>
       <p>{post.body}</p>
     </div>
   );
@@ -18,6 +18,7 @@ Post.propTypes = {
     title: P.string,
     body: P.string,
   }),
+  handleClick: P.func,
 };
 
 export default function App() {
@@ -72,29 +73,49 @@ export default function App() {
   */
   // useMemo() voce pode memorizar um component em sí, um valor para ser memorizado
   // useCallback() para vc memorizar um callback (FUNÇÃO)
+  // useRef serve para pegar alguma coisa que está na tela elemento da DOM
   const [posts, setPosts] = useState([]);
   const [value, setValue] = useState("");
+  const input = useRef(null);
+  const contador = useRef(0);
+
   console.log("Pai renderizou!");
 
   // componentDidMount
   useEffect(() => {
-    setTimeout(() => {
-      fetch("https://jsonplaceholder.typicode.com/posts")
-        .then((response) => response.json())
-        .then((response) => setPosts(response));
-    }, 3000);
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((response) => response.json())
+      .then((response) => setPosts(response));
   }, []);
+
+  useEffect(() => {
+    input.current.focus();
+    console.log(input.current);
+  }, [value]);
+
+  // componentDidUpdate
+  useEffect(() => {
+    contador.current++;
+  });
+
+  const handleClick = (value) => {
+    setValue(value);
+  };
 
   return (
     <div className="App">
+      <h1>Renderizou {contador.current}x</h1>
       <input
+        ref={input}
         type="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
       {useMemo(() => {
         return posts.length > 0 ? (
-          posts.map((post) => <Post post={post} key={post.id} />)
+          posts.map((post) => (
+            <Post post={post} key={post.id} handleClick={handleClick} />
+          ))
         ) : (
           <p>Ainda Não existem posts</p>
         );
