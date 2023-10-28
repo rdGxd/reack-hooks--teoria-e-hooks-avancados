@@ -46,7 +46,7 @@ desenvolvimento de interfaces interativas em JavaScript.
 o `useEffect` é uma função usada para realizar ações secundárias em resposta a mudanças em um
 componente ou quando algo acontece no ciclo de vida do componente. Aqui está como funciona:
 
-`Declaração do `useEffect``: Você usa o `useEffect`em um componente funcional do React para realizar ações quando algo específico acontece. Para fazer isso, você passa duas coisas para o`useEffect`:
+`Declaração do useEffect`: Você usa o `useEffect`em um componente funcional do React para realizar ações quando algo específico acontece. Para fazer isso, você passa duas coisas para o`useEffect`:
 uma função e um array de dependências (ou nada, se você quiser que o efeito seja executado toda vez
 que o componente for renderizado).
 
