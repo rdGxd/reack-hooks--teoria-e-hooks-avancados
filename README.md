@@ -111,9 +111,8 @@ após o primeiro render.
 
 ```js
 useEffect(() => {
-  // Código só sera excetuado 1x
-  console.log("componentDidMount");
-});
+  // Código a ser executado após a montagem do componente (equivalente ao componentDidMount) -> executa 1x
+}, []);
 ```
 
 2- `componentDidUpdate`: Esse método era chamado sempre que as props ou o estado
@@ -124,7 +123,6 @@ você deseja observar.
 ```js
 useEffect(() => {
   // Código a ser executado após cada atualização do componente (equivalente ao componentDidUpdate)
-  console.log("componentDidUpdate");
 }, [dependencia1, dependencia2]);
 ```
 
@@ -136,13 +134,8 @@ que o componente seja desmontado.
 ```js
 useEffect(() => {
   // Código a ser executado antes da desmontagem do componente (equivalente ao componentWillUnmount)
-  document.querySelector("h1").addEventListener("click", eventFn);
-  console.log("componentWillUnmount");
-
   return () => {
     // Limpeza ou remoção de event listeners
-    document.querySelector("h1")?.removeEventListener("click", eventFn);
-    console.log("componentWillUnmount");
   };
 }, []);
 ```
