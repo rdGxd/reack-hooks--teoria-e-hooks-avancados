@@ -71,9 +71,10 @@ export default function App() {
     setCounter((prevCounter) => prevCounter + num);
   }, []);
   */
-  // useMemo() voce pode memorizar um component em sí, um valor para ser memorizado
-  // useCallback() para vc memorizar um callback (FUNÇÃO)
-  // useRef serve para pegar alguma coisa que está na tela elemento da DOM
+
+  // useMemo() Retorna um valor memoizado (guardado em cache)
+  // useCallback() Retorna um callback (Função) memoizado (guardado em cache).
+  // useRef serve para pegar alguma coisa que está na tela elemento da DOM, use no lugar do document.querySelector quando estiver usando React
   const [posts, setPosts] = useState([]);
   const [value, setValue] = useState("");
   const input = useRef(null);
@@ -105,17 +106,10 @@ export default function App() {
   return (
     <div className="App">
       <h1>Renderizou {contador.current}x</h1>
-      <input
-        ref={input}
-        type="search"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
+      <input ref={input} type="search" value={value} onChange={(e) => setValue(e.target.value)} />
       {useMemo(() => {
         return posts.length > 0 ? (
-          posts.map((post) => (
-            <Post post={post} key={post.id} handleClick={handleClick} />
-          ))
+          posts.map((post) => <Post post={post} key={post.id} handleClick={handleClick} />)
         ) : (
           <p>Ainda Não existem posts</p>
         );
