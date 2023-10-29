@@ -1,60 +1,67 @@
-import { useReducer } from "react";
+import P from "prop-types";
+import { createContext, useContext, useReducer, useRef } from "react";
 import "./App.css";
 
+// actions.js
+export const actions = {
+  CHANGE_TITLE: "CHANGE_TITLE",
+};
+
+// data.js
 export const globalState = {
   title: "O titulo do contexto",
   body: "O body do contexto",
   counter: 0,
 };
 
-// Sempre que eu usar uma função de reducer tenho que retorna um state
-const reducer = (state, action) => {
+// reducer.js
+export const reducer = (state, action) => {
   switch (action.type) {
-    // Se a ação tiver o type 'muda' executa essa função
-    case "muda": {
-      console.log("Chamou muda com", action.payload);
+    case actions.CHANGE_TITLE: {
+      console.log("Mudar titulo");
       return { ...state, title: action.payload };
     }
-
-    case "inverter": {
-      console.log("Chamou inverter");
-      const { title } = state;
-      return { ...state, title: title.split("").reverse().join("") };
-    }
   }
-
-  console.log("NENHUMA ACTION ENCONTRADA...");
-  // Se não executa essa função de retorno
   return { ...state };
 };
 
-export default function App() {
-  // useReducer recebe uma função de reducer e um estado inicial -> Ele retornar o estado e a função dispatch
+// AppContext.jsx
+export const Context = createContext();
+export const AppContext = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, globalState);
-  const { counter, title, body } = state;
+
+  const changeTitle = (payload) => {
+    dispatch({ type: actions.CHANGE_TITLE, payload });
+  };
+
+  return <Context.Provider value={{ state, changeTitle }}>{children}</Context.Provider>;
+};
+
+AppContext.propTypes = {
+  children: P.node,
+};
+
+// H1/index.jsx
+export const H1 = () => {
+  const context = useContext(Context);
+  const inputRef = useRef();
 
   return (
-    <div>
-      <h1>
-        {title} {counter}
-      </h1>
-      {/* dispatch -> dispara ações -> Use com o objeto e coloque o type informando o type da ação */}
-      {/* payload -> voce envia os dados que precisa */}
-      <button
-        type="button"
-        onClick={() => dispatch({ type: "muda", payload: new Date().toLocaleString("pt-BR") })}
-      >
-        Click
-      </button>
+    <>
+      <h1 onClick={() => context.changeTitle(inputRef.current.value)}>{context.state.title}</h1>
+      <input type="text" ref={inputRef} />
+    </>
+  );
+};
 
-      <button type="button" onClick={() => dispatch({ type: "inverter" })}>
-        Invert
-      </button>
-
-      <button type="button" onClick={() => dispatch({ type: "" })}>
-        SEM ACTION
-      </button>
-    </div>
+// App.jsx
+export default function App() {
+  return (
+    <AppContext>
+      <div>
+        <H1 />
+      </div>
+    </AppContext>
   );
 }
 
