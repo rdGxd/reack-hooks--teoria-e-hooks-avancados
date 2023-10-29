@@ -1,6 +1,6 @@
 # Estudos React
 
-- [useState()](./useState())
+- [useState()](useState())
 - [useEffect()](<useEffect()>)
 - [useCallback()](<useCallback()>)
 - [useMemo()](<useMemo()>)
