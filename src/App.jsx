@@ -1,55 +1,12 @@
-import { createContext, useContext, useState } from "react";
 import "./App.css";
-
-// eslint-disable-next-line
-const globalState = {
-  title: "O titulo do contexto",
-  body: "O body do contexto",
-  counter: 0,
-};
-// eslint-disable-next-line
-const GlobalContext = createContext();
-
-// eslint-disable-next-line
-const Div = ({ children }) => {
-  return (
-    <div className="App">
-      <H1 />
-      <P />
-    </div>
-  );
-};
-
-// eslint-disable-next-line
-const H1 = () => {
-  const theContext = useContext(GlobalContext);
-  const {
-    contextState: { title, counter },
-  } = theContext;
-  return (
-    <h1>
-      {title} {counter}
-    </h1>
-  );
-};
-
-// eslint-disable-next-line
-const P = () => {
-  const theContext = useContext(GlobalContext);
-  const {
-    contextState: { body },
-    setContextState,
-  } = theContext;
-  return <p onClick={() => setContextState((s) => ({ ...s, counter: s.counter + 1 }))}>{body}</p>;
-};
+import { Div } from "./components/Div";
+import { AppContext } from "./contexts/AppContext";
 
 export default function App() {
-  const [contextState, setContextState] = useState(globalState);
-
   return (
-    <GlobalContext.Provider value={{ contextState, setContextState }}>
+    <AppContext>
       <Div />
-    </GlobalContext.Provider>
+    </AppContext>
   );
 }
 
