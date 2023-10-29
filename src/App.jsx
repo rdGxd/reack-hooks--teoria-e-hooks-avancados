@@ -1,12 +1,60 @@
+import { useReducer } from "react";
 import "./App.css";
-import { Div } from "./components/Div";
-import { AppContext } from "./contexts/AppContext";
+
+export const globalState = {
+  title: "O titulo do contexto",
+  body: "O body do contexto",
+  counter: 0,
+};
+
+// Sempre que eu usar uma função de reducer tenho que retorna um state
+const reducer = (state, action) => {
+  switch (action.type) {
+    // Se a ação tiver o type 'muda' executa essa função
+    case "muda": {
+      console.log("Chamou muda com", action.payload);
+      return { ...state, title: action.payload };
+    }
+
+    case "inverter": {
+      console.log("Chamou inverter");
+      const { title } = state;
+      return { ...state, title: title.split("").reverse().join("") };
+    }
+  }
+
+  console.log("NENHUMA ACTION ENCONTRADA...");
+  // Se não executa essa função de retorno
+  return { ...state };
+};
 
 export default function App() {
+  // useReducer recebe uma função de reducer e um estado inicial -> Ele retornar o estado e a função dispatch
+  const [state, dispatch] = useReducer(reducer, globalState);
+  const { counter, title, body } = state;
+
   return (
-    <AppContext>
-      <Div />
-    </AppContext>
+    <div>
+      <h1>
+        {title} {counter}
+      </h1>
+      {/* dispatch -> dispara ações -> Use com o objeto e coloque o type informando o type da ação */}
+      {/* payload -> voce envia os dados que precisa */}
+      <button
+        type="button"
+        onClick={() => dispatch({ type: "muda", payload: new Date().toLocaleString("pt-BR") })}
+      >
+        Click
+      </button>
+
+      <button type="button" onClick={() => dispatch({ type: "inverter" })}>
+        Invert
+      </button>
+
+      <button type="button" onClick={() => dispatch({ type: "" })}>
+        SEM ACTION
+      </button>
+    </div>
   );
 }
 
