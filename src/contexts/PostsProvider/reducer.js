@@ -13,6 +13,6 @@ export const reducer = (state, action) => {
     }
   }
 
-  console.log("Não encontrei a action type", action.type);
+  console.log("Não encontrei a action", action.type);
   return { ...state };
 };
