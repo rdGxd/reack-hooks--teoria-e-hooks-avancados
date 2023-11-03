@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 
 export const Abc = () => {
+  // const params = useParams();
   const { slug, id } = useParams();
 
   return (
