@@ -13,11 +13,11 @@ root.render(
     <BrowserRouter>
       <Menu />
       <Routes>
-        <Route path="/abc/:slug?/:id?" Component={Abc} />
-        <Route path="/abc/:slug?" Component={Abc} />
-        <Route path="/abc" Component={Abc} />
-        <Route path="/" Component={App} exact />
-        <Route path="*" Component={Page404} />
+        <Route index path="/" element={<App />} />
+        <Route path="/abc/:slug?/:id?" element={<Abc />} />
+        <Route path="/abc/:slug?" element={<Abc />} />
+        <Route path="/abc/" element={<Abc />} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
