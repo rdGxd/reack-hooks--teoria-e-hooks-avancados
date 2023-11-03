@@ -11,8 +11,12 @@ export const Menu = () => {
         alignItems: "center",
       }}
     >
+      {/* <Link> Carrega somente o necessário */}
       <Link to={"/"}>Home</Link>
       <Link to={"/abc"}>Abc</Link>
+      {/* <a> ELE VAI CARREGAR UMA PÁGINA TODA DO ZERO  */}
+      <a href={"/"}>Home (A)</a>
+      <a href={"/abc"}>Abc (A)</a>
     </nav>
   );
 };
